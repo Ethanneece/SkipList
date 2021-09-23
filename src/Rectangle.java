@@ -1,11 +1,11 @@
 
 public class Rectangle {
-
+	
 	private String name; 
 	
 	private int x, y, w, h; 
 	
-	private final Rectangle WORLD_BOX = new Rectangle(0, 0, 1024, 1024, "World Box");
+	//private final Rectangle WORLD_BOX = new Rectangle(0, 0, 1024, 1024);
 	
 	/**
 	 * 
@@ -16,12 +16,13 @@ public class Rectangle {
 	 * @param name
 	 */
 	public Rectangle(int x, int y, int w, int h, String name) {
-		
-		this.name = name; 
+
 		this.x = x; 
 		this.y = y; 
 		this.w = w; 
 		this.h = h;
+		
+		this.name = name; 
 	}
 	
 	private boolean isOverlapping(Rectangle out, Rectangle in)
@@ -32,5 +33,10 @@ public class Rectangle {
 		}
 		
 		return true;
+	}
+	
+	public String toString()
+	{
+		return "(" + name + ", " + x + ", " + y + ", " + w + ", " + h + ")";
 	}
 }

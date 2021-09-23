@@ -1,11 +1,13 @@
 import java.util.Random;
 
+import student.TestableRandom;
+
 public class SkipList<K extends Comparable<K>, V> {
 	
 	private SkipNode<K, V> head; 
 	private int level; 
 	private int size; 
-	static private Random ran = new Random();
+	static private Random ran = new TestableRandom();
 	
 	public SkipList()
 	{
@@ -53,7 +55,7 @@ public class SkipList<K extends Comparable<K>, V> {
 		if(newLevel > level)
 		{
 			SkipNode<K, V> newHead = new SkipNode<K,V>(null, null, newLevel);
-			for(int i = 0; i < level; i++)
+			for(int i = 0; i <= level; i++)
 			{
 				newHead.getForward()[i] = head.getForward()[i];
 			}
@@ -63,20 +65,21 @@ public class SkipList<K extends Comparable<K>, V> {
 		
 		SkipNode<K, V>[] update = new SkipNode[level + 1];
 		SkipNode<K, V> x = head; 
-		for(int i = level; i > 0; i --)
+		for(int i = level; i >= 0; i --)
 		{
 			while((x.getForward()[i] != null) && 
 					x.getForward()[i].key().compareTo(key) < 0)
 			{
 				x = x.getForward()[i];
 			}
-			update[i].getForward()[i] = x;
+			update[i] = x;
 		} 
 		
-		x = new SkipNode<K, V>(key, value, newLevel)
+		x = new SkipNode<K, V>(key, value, newLevel);
 		for (int i = 0; i <= newLevel; i++)
 		{
 			x.getForward()[i] = update[i].getForward()[i];
+			update[i].getForward()[i] = x;
 		}
 		
 		size++; 
@@ -84,7 +87,50 @@ public class SkipList<K extends Comparable<K>, V> {
 	
 	public V remove(K key)
 	{
-		SkipNode<K, V> update = new SkipNode<K, V>[level];
-		g
+		
+		if(size == 0)
+		{
+			return null; 
+		}
+		
+		SkipNode<K, V>[] update = new SkipNode[level + 1];
+		
+		SkipNode<K, V> x = head; 
+		for(int i = level; i >= 0; i--)
+		{
+			while(x.getForward()[i] != null && x.getForward()[i].key().compareTo(key) < 0)
+			{
+				x = x.getForward()[i];
+			}
+			update[i] = x; 
+		}
+		
+		if (update[0].getForward()[0].key().compareTo(key) != 0)
+		{
+			return null; 
+		}
+		
+		x = update[0].getForward()[0];
+		for(int i = level; i >= 0; i--)
+		{
+			update[i].getForward()[i] = x.getForward()[i];
+		}
+		
+		size--; 
+		return x.value(); 
+	}
+	
+	public void dump()
+	{
+		SkipNode<K,V> x = head;
+		System.out.println("Node has depth " + x.getForward().length + ", " + "Value (null)");
+		x = x.getForward()[0];
+		while(x != null)
+		{
+			System.out.println(x.toString());
+			x = x.getForward()[0];
+		}
+		
+		System.out.println("SkipList size is: " + size);
 	}
 }
