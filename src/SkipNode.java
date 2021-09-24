@@ -1,60 +1,71 @@
 
-public class SkipNode<K extends Comparable<K>, V> {
-	private K key;
-	private V value; 
-	private SkipNode<K, V>[] forward;
+/**
+ * SkipNode holding a key and value pair and links to other SKipNodes.
+ * 
+ * @author Ethan Neece (ethann)
+ * @version 9/23/2021
+ * @param <K>
+ * @param <V>
+ */
+public class SkipNode<K extends Comparable<K>, V>
+{
+    private K key;
+    private V value;
+    private SkipNode<K, V>[] forward;
 
     /**
      *
      * @return key.
      */
-	public K key()
-	{
-		return key;
-	}
+    public K key()
+    {
+        return key;
+    }
 
     /**
      *
      * @return value.
      */
-	public V value()
-	{
-		return value;
-	}
+    public V value()
+    {
+        return value;
+    }
 
     /**
      *
      * @return forward.
      */
-	public SkipNode<K, V>[] getForward()
-	{
-		return forward;
-	}
+    public SkipNode<K, V>[] getForward()
+    {
+        return forward;
+    }
 
     /**
      * Creates an object of SkipNode.
-     * @param key being put into SkipNode.
+     * 
+     * @param key   being put into SkipNode.
      * @param value being put into SkipNode.
      * @param level how many pointers this has.
      */
-	@SuppressWarnings("unchecked")
-	public SkipNode(K key, V value, int level)
-	{
-		this.key = key; 
-		this.value = value; 
-		forward = new SkipNode[level + 1];
-		for(int i = 0; i < level; i++)
-		{
-			forward[i] = null; 
-		}
-	}
-
+    @SuppressWarnings("unchecked")
+    public SkipNode(K key, V value, int level)
+    {
+        this.key = key;
+        this.value = value;
+        forward = new SkipNode[level + 1];
+        for (int i = 0; i < level; i++)
+        {
+            forward[i] = null;
+        }
+    }
 
     /**
      *
      * @return String representation of SkipNode.
      */
-	public String toString() {
-		return "Node has depth " + forward.length + ", " + "Value " + value.toString(); 
-	}
+    public String toString()
+    {
+        return "Node has depth " + forward.length + ", " + "Value "
+                + value.toString();
+    }
 }

@@ -1,198 +1,209 @@
 import student.TestCase;
 import student.TestableRandom;
 
-import java.util.ArrayList;
+/**
+ * Class to test the functionality of the Skip List class.
+ * 
+ * @author Ethan Neece (ethann)
+ * @version 9/23/2021
+ */
+public class SkipListTest extends TestCase
+{
 
-public class SkipListTest extends TestCase {
-	
-	private SkipList<String, Rectangle> empty;
-	private SkipList<String, Rectangle> small;
-	private SkipList<String, Rectangle> medium;
-	private SkipList<String, Rectangle> big;
-	private SkipList<String, Rectangle> duplicateKeys;
+    private SkipList<String, Rectangle> empty;
+    private SkipList<String, Rectangle> small;
+    private SkipList<String, Rectangle> medium;
+    private SkipList<String, Rectangle> big;
+    private SkipList<String, Rectangle> duplicateKeys;
 
-	/**
-	 * Sets up testing for the SkipList.
-	 */
-	public void setUp() {
-		 empty = new SkipList<>();
-		 
-		 small = new SkipList<>(); 
-		 
-		 for(int i = 0; i < 10; i++)
-		 {
-			 Rectangle rect = new Rectangle(i, i, i, i, "ro" + i);
-			 small.insert("ro" + i, rect);
-		 }
-		 
-		 medium = new SkipList<>(); 
-		 for(int i = 0; i < 100; i++)
-		 {
-			 Rectangle rect = new Rectangle(i, i, i, i, i +"r");
-			 medium.insert(i + "r", rect);
-		 }
-		 
-		 big = new SkipList<>(); 
-		 for(int i = 0; i < 1000; i++)
-		 {
-			 Rectangle rect = new Rectangle(i, i, i, i, "r" + i); 
-			 big.insert("r" + i, rect);
-		 }
+    /**
+     * Sets up testing for the SkipList.
+     */
+    public void setUp()
+    {
+        empty = new SkipList<>();
 
-		 duplicateKeys = new SkipList<>();
-		 for(int i = 0; i < 10; i++)
-		 {
-		 	Rectangle rect = new Rectangle(i, i, i, i, "rect");
-		 	duplicateKeys.insert("rect", rect);
-		 }
-	}
+        small = new SkipList<>();
 
-	/**
-	 * Test the insert method in SkipList.
-	 */
-	public void testInsert() {
-		
-		Rectangle rect1 = new Rectangle(5, 3, 2, 1, "rect1");
-		Rectangle rect2 = new Rectangle(10, 20, 10, 10, "rect2");
-		Rectangle rect3 = new Rectangle(1, 1, 1, 1, "rect3");
-		Rectangle rect4 = new Rectangle(6, 6, 6, 6, "rect4");
-		
-		TestableRandom.setNextInts(2, 2, 2, 1, 2, 2, 1, 2, 2, 2, 2, 1, 1);
-		
-		empty.insert("rect1", rect1);
-		empty.insert("rect2", rect2);
-		empty.insert("rect3", rect3);
-		empty.insert("rect4", rect4);
-		
-		empty.dump(); 
-		
-		assertFuzzyEquals("Node has depth 5, Value (null)\n"
-				+ "Node has depth 4, Value (rect1, 5, 3, 2, 1)\n"
-				+ "Node has depth 3, Value (rect2, 10, 20, 10, 10)\n"
-				+ "Node has depth 5, Value (rect3, 1, 1, 1, 1)\n"
-				+ "Node has depth 1, Value (rect4, 6, 6, 6, 6)\n"
-				+ "SkipList size is: 4", systemOut().getHistory());
-		
-		systemOut().clearHistory(); 
-		
-		Rectangle rect6 = new Rectangle(1, 2, 3, 4, "rect6");
-		Rectangle rect7 = new Rectangle(3, 2, 3, 4, "rect");
-		Rectangle rect8 = new Rectangle(5, 10, 20, 30, "rect24");
-		Rectangle rect9 = new Rectangle(7, 2, 3, 5, "rect44");
-		
-		TestableRandom.setNextInts(1, 2, 1, 2, 2, 1, 2, 2, 2, 1);
-		
-		empty.insert("rect6", rect6);
-		empty.insert("rect", rect7);
-		empty.insert("rect24", rect8);
-		empty.insert("rect44", rect9);
-		
-		empty.dump(); 
-		
-		assertFuzzyEquals("Node has depth 5, Value (null)\n"
-				+ "Node has depth 2, Value (rect, 3, 2, 3, 4)\n"
-				+ "Node has depth 4, Value (rect1, 5, 3, 2, 1)\n"
-				+ "Node has depth 3, Value (rect2, 10, 20, 10, 10)\n"
-				+ "Node has depth 3, Value (rect24, 5, 10, 20, 30)\n"
-				+ "Node has depth 5, Value (rect3, 1, 1, 1, 1)\n"
-				+ "Node has depth 1, Value (rect4, 6, 6, 6, 6)\n"
-				+ "Node has depth 4, Value (rect44, 7, 2, 3, 5)\n"
-				+ "Node has depth 1, Value (rect6, 1, 2, 3, 4)\n"
-				+ "SkipList size is: 8", systemOut().getHistory());
-	}
+        for (int i = 0; i < 10; i++)
+        {
+            Rectangle rect = new Rectangle(i, i, i, i, "ro" + i);
+            small.insert("ro" + i, rect);
+        }
 
-	/**
-	 * Tests the remove method in SkipList.
-	 */
-	public void testRemove()
-	{
-		assertEquals(null, empty.remove("rect")); 
-		
-		Rectangle rect = new Rectangle(1, 1, 1, 1, "rect");
-		
-		empty.insert("rect", rect);
+        medium = new SkipList<>();
+        for (int i = 0; i < 100; i++)
+        {
+            Rectangle rect = new Rectangle(i, i, i, i, i + "r");
+            medium.insert(i + "r", rect);
+        }
 
-		assertEquals(rect, empty.remove("rect"));
+        big = new SkipList<>();
+        for (int i = 0; i < 1000; i++)
+        {
+            Rectangle rect = new Rectangle(i, i, i, i, "r" + i);
+            big.insert("r" + i, rect);
+        }
 
-		rect = new Rectangle(20, 20, 20, 20, "20r");
-		assertEquals(rect, medium.remove("20r"));
+        duplicateKeys = new SkipList<>();
+        for (int i = 0; i < 10; i++)
+        {
+            Rectangle rect = new Rectangle(i, i, i, i, "rect");
+            duplicateKeys.insert("rect", rect);
+        }
+    }
 
-		for(int i = 999; i >= 0; i--)
-		{
-			rect = new Rectangle(i, i, i, i, "r" + i);
-			assertEquals(rect, big.remove("r" + i));
-		}
-	}
+    /**
+     * Test the insert() method in SkipList.
+     */
+    public void testInsert()
+    {
 
-	/**
-	 * Test the removexywh method in SkipList.
-	 */
-	public void testRemovexywh()
-	{
-		Rectangle rect = new Rectangle(1, 1, 1, 1, "rect");
-		assertEquals(null, empty.remove(rect, 0 ));
+        Rectangle rect1 = new Rectangle(5, 3, 2, 1, "rect1");
+        Rectangle rect2 = new Rectangle(10, 20, 10, 10, "rect2");
+        Rectangle rect3 = new Rectangle(1, 1, 1, 1, "rect3");
+        Rectangle rect4 = new Rectangle(6, 6, 6, 6, "rect4");
 
-		empty.insert("rect", rect);
+        TestableRandom.setNextInts(2, 2, 2, 1, 2, 2, 1, 2, 2, 2, 2, 1, 1);
 
-		assertEquals(rect, empty.remove(rect, 0));
+        empty.insert("rect1", rect1);
+        empty.insert("rect2", rect2);
+        empty.insert("rect3", rect3);
+        empty.insert("rect4", rect4);
 
-		rect = new Rectangle(20, 20, 20, 20, "20r");
-		assertEquals(rect, medium.remove(rect, 0));
+        empty.dump();
 
-		rect = new Rectangle(200, 200, 200, 200, "r200");
-		assertEquals(rect, big.remove(rect, 0));
-	}
+        assertFuzzyEquals("Node has depth 5, Value (null)\n"
+                + "Node has depth 4, Value (rect1, 5, 3, 2, 1)\n"
+                + "Node has depth 3, Value (rect2, 10, 20, 10, 10)\n"
+                + "Node has depth 5, Value (rect3, 1, 1, 1, 1)\n"
+                + "Node has depth 1, Value (rect4, 6, 6, 6, 6)\n"
+                + "SkipList size is: 4", systemOut().getHistory());
 
-	/**
-	 * Test the regionSearch method in SkipList.
-	 */
-	public void testRegionSearch()
-	{
-		Rectangle rect = new Rectangle(1, 1, 1, 1, "");
-		assertEquals(empty.regionSearch(rect).size(), 0);
+        systemOut().clearHistory();
 
-		empty.insert("rect", rect);
-		assertEquals(empty.regionSearch(rect).get(0), rect);
+        Rectangle rect6 = new Rectangle(1, 2, 3, 4, "rect6");
+        Rectangle rect7 = new Rectangle(3, 2, 3, 4, "rect");
+        Rectangle rect8 = new Rectangle(5, 10, 20, 30, "rect24");
+        Rectangle rect9 = new Rectangle(7, 2, 3, 5, "rect44");
 
-		rect = new Rectangle(-1, -1, 100, 100, "");
-		assertEquals(small.regionSearch(rect).size(), 10);
+        TestableRandom.setNextInts(1, 2, 1, 2, 2, 1, 2, 2, 2, 1);
 
-		rect = new Rectangle(-1, -1, 5, 5, "");
-		assertEquals(small.regionSearch(rect).size(), 4);
+        empty.insert("rect6", rect6);
+        empty.insert("rect", rect7);
+        empty.insert("rect24", rect8);
+        empty.insert("rect44", rect9);
 
-		rect = new Rectangle(-1, -1, 20, 20, "");
-		assertEquals(medium.regionSearch(rect).size(), 19);
-	}
+        empty.dump();
 
-	/**
-	 * test the intersection method in SkipList.
-	 */
-	public void testIntersection()
-	{
-		assertEquals(empty.intersections().size(), 0 );
+        assertFuzzyEquals("Node has depth 5, Value (null)\n"
+                + "Node has depth 2, Value (rect, 3, 2, 3, 4)\n"
+                + "Node has depth 4, Value (rect1, 5, 3, 2, 1)\n"
+                + "Node has depth 3, Value (rect2, 10, 20, 10, 10)\n"
+                + "Node has depth 3, Value (rect24, 5, 10, 20, 30)\n"
+                + "Node has depth 5, Value (rect3, 1, 1, 1, 1)\n"
+                + "Node has depth 1, Value (rect4, 6, 6, 6, 6)\n"
+                + "Node has depth 4, Value (rect44, 7, 2, 3, 5)\n"
+                + "Node has depth 1, Value (rect6, 1, 2, 3, 4)\n"
+                + "SkipList size is: 8", systemOut().getHistory());
+    }
 
-		assertEquals(32, small.intersections().size());
+    /**
+     * Tests the remove() method in SkipList.
+     */
+    public void testRemove()
+    {
+        assertEquals(null, empty.remove("rect"));
 
-		assertEquals(4802, medium.intersections().size());
-	}
+        Rectangle rect = new Rectangle(1, 1, 1, 1, "rect");
 
-	/**
-	 * Test the search method in SkipList.
-	 */
-	public void testSearch()
-	{
-		assertEquals(empty.search("rect").size(), 0);
+        empty.insert("rect", rect);
 
-		assertEquals(duplicateKeys.search("rect").size(), 10);
+        assertEquals(rect, empty.remove("rect"));
 
-		for(int i = 0; i < 10; i++)
-		{
-			Rectangle rect = new Rectangle(i, i, i, i, i + "rect");
-			duplicateKeys.insert(i + "rect", rect);
-		}
+        assertNull(small.remove("rect"));
 
-		assertEquals(duplicateKeys.search("rect").size(), 10);
+        rect = new Rectangle(20, 20, 20, 20, "20r");
+        assertEquals(rect, medium.remove("20r"));
 
-		assertEquals(big.search("r30").size(), 1);
-	}
+        for (int i = 999; i >= 0; i--)
+        {
+            rect = new Rectangle(i, i, i, i, "r" + i);
+            assertEquals(rect, big.remove("r" + i));
+        }
+    }
+
+    /**
+     * Test the removeValue() method in SkipList.
+     */
+    public void testRemoveValue()
+    {
+        Rectangle rect = new Rectangle(1, 1, 1, 1, "rect");
+        assertEquals(null, empty.removeValue(rect));
+
+        empty.insert("rect", rect);
+
+        assertEquals(rect, empty.removeValue(rect));
+
+        rect = new Rectangle(20, 20, 20, 20, "20r");
+        assertEquals(rect, medium.removeValue(rect));
+
+        rect = new Rectangle(200, 200, 200, 200, "r200");
+        assertEquals(rect, big.removeValue(rect));
+    }
+
+    /**
+     * Test the regionSearch() method in SkipList.
+     */
+    public void testRegionSearch()
+    {
+        Rectangle rect = new Rectangle(1, 1, 1, 1);
+        assertEquals(empty.regionSearch(rect).size(), 0);
+
+        empty.insert("rect", rect);
+        assertEquals(empty.regionSearch(rect).get(0), rect);
+
+        rect = new Rectangle(-1, -1, 100, 100);
+        assertEquals(small.regionSearch(rect).size(), 10);
+
+        rect = new Rectangle(-1, -1, 5, 5);
+        assertEquals(small.regionSearch(rect).size(), 4);
+
+        rect = new Rectangle(-1, -1, 20, 20);
+        assertEquals(medium.regionSearch(rect).size(), 19);
+    }
+
+    /**
+     * test the intersection() method in SkipList.
+     */
+    public void testIntersection()
+    {
+        assertEquals(empty.intersections().size(), 0);
+
+        assertEquals(32, small.intersections().size());
+
+        assertEquals(4802, medium.intersections().size());
+    }
+
+    /**
+     * Test the search method in SkipList.
+     */
+    public void testSearch()
+    {
+        assertEquals(0, empty.search("rect").size());
+
+        assertEquals(0, small.search("rect").size());
+
+        assertEquals(10, duplicateKeys.search("rect").size());
+
+        for (int i = 0; i < 10; i++)
+        {
+            Rectangle rect = new Rectangle(i, i, i, i, i + "rect");
+            duplicateKeys.insert(i + "rect", rect);
+        }
+
+        assertEquals(10, duplicateKeys.search("rect").size());
+
+        assertEquals(1, big.search("r30").size());
+    }
 }
